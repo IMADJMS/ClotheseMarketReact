@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/ClotheseMarketReact/static/css/main.07154f35.css",
+    "main.js": "/ClotheseMarketReact/static/js/main.bc491363.js",
+    "static/media/event_cover.jpg": "/ClotheseMarketReact/static/media/event_cover.b3cfc94d6828d20fa9fb.jpg",
+    "static/media/website.s_banner_default_image.jpg": "/ClotheseMarketReact/static/media/website.s_banner_default_image.3f048129138034a9888f.jpg",
+    "static/media/website.s_cover_default_image.jpg": "/ClotheseMarketReact/static/media/website.s_cover_default_image.7a3e2a22af7afe38aca8.jpg",
+    "static/media/wavee.png": "/ClotheseMarketReact/static/media/wavee.db204182de5d686ed554.png",
+    "index.html": "/ClotheseMarketReact/index.html",
+    "main.07154f35.css.map": "/ClotheseMarketReact/static/css/main.07154f35.css.map",
+    "main.bc491363.js.map": "/ClotheseMarketReact/static/js/main.bc491363.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.07154f35.css",
+    "static/js/main.bc491363.js"
+  ]
+}
