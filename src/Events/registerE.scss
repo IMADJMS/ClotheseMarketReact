@@ -1,0 +1,96 @@
+@import '../VAR/variabl.scss';
+// @import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Foundation&family=Fasthand&family=Josefin+Sans&display=swap');
+
+
+.divEventRegister {
+    a {
+        color: $offXhiteColor !important;
+        font-size: 25px;
+    }
+}
+
+.divEventRegister {
+    a :focus {
+        color: red !important;
+    }
+}
+
+.divRegisterRech {
+    display: flex;
+    justify-content: end;
+    margin-left: 150px;
+    height: 40px;
+
+}
+
+.SearchEventRegister {
+
+    input {
+        background-color: $colorBackGround;
+        border-radius: 0 0 0;
+        width: 250px !important;
+
+    }
+
+    button {
+        background-color: $offXhiteColor;
+        border-radius: 0 !important;
+        opacity: 0.6;
+        width: 70px;
+    }
+
+    input :hover {
+        border: 1px gray solid !important;
+    }
+}
+
+
+.registerImgaeEvent {
+    background-image: url('../../public/image/event_cover.jpg');
+    min-height: 37vh;
+}
+
+
+
+@media (min-width:768px) and (max-width:992px) {
+    .divRegisterRech {
+        margin-left: 20px;
+        position: relative;
+        bottom: 25px;
+    }
+
+    .divEventRegister {
+        position: relative;
+        bottom: -32px;
+    }
+
+}
+
+
+@media (max-width:767px) {
+    .parentDivEvents {
+        padding-top: 150px !important;
+        position: relative;
+    }
+
+    .divEventRegister {
+        position: relative;
+        bottom: 110px;
+    }
+
+    .divRegisterRech {
+        display: flex;
+        flex-direction: column-reverse;
+        margin-left: 0px;
+        position: relative;
+        bottom: 60px;
+
+    }
+
+    .SearchEventRegister {
+        position: relative;
+        right: 47px;
+
+    }
+
+}

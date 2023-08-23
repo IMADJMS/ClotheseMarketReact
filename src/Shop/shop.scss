@@ -1,0 +1,58 @@
+@import '../VAR/variabl.scss';
+
+
+.colRange {
+    .smallTwo {
+        display: flex;
+        justify-content: end;
+        margin-top: -22px;
+    }
+}
+
+.Search {
+    input {
+        background-color: $colorBackGround;
+        border-radius: 0 0 0;
+        border: 0 !important;
+        width: 600px !important;
+    }
+
+    button {
+        background-color: $colorBackGround;
+        border-radius: 0 !important;
+        opacity: 0.6;
+        border: 0;
+        width: 70px;
+    }
+
+    input :hover {
+        border: 1px gray solid !important;
+    }
+}
+
+.dropdown {
+    .dropdownA {
+        background-color: $colorBackGround;
+        height: 40px;
+
+    }
+}
+
+// .card{
+//     width: 5030rem !important;
+// }
+
+
+@media (max-width:992px) {
+    .colSort {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width:575px) {
+    .cards{
+    
+        display: flex;
+        justify-content: center;
+    }
+}

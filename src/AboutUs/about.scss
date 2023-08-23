@@ -1,0 +1,101 @@
+@import '../VAR/variabl.scss';
+
+body {
+    min-height: 200vh;
+}
+
+
+.AboutUs {
+    background-image: url('../../public/image/website.s_banner_default_image.jpg');
+    min-height: 17vh;
+
+    .AboutUs-h1 {
+        position: absolute;
+        top: 100px;
+        left: 158px;
+        font-weight: 500;
+        color: $white;
+        font-size: 70px;
+        display: flex;
+        justify-content: start;
+    }
+}
+
+.ParanetSection {
+    // background-color: #B3AD9B;
+    height: 500px;
+
+    .container {
+        position: relative;
+        top: 57px;
+    }
+
+    .colIMage {
+        position: relative;
+        top: -20px;
+    }
+
+}
+
+.AboutUs-button {
+    color: #212529;
+    background-color: #efe6ce;
+    border-color: #efe6ce;
+    width: 150px;
+}
+
+
+.Everything {
+    min-height: 55vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../../public/image/website.s_banner_default_image.jpg');
+
+    h1 {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        top: 135px;
+        font-weight: bolder;
+        font-size: 70px;
+        color: $white;
+        text-align: center;
+    }
+}
+
+// ALL Media Query
+
+@media (min-width:0px) and (max-width:509px) {
+    .ParanetSection {
+        height: 720px;
+
+    }
+
+    .image {
+        width: 462px;
+        margin-right: 1px;
+    }
+}
+
+@media (min-width:0px) and (max-width:700px) {
+    .AboutUs-h1 {
+        position: absolute;
+        top: 110px !important;
+        left: 68px !important;
+        display: flex !important;
+        justify-content: start !important;
+    }
+
+    .Everything {
+        position: relative;
+        top: 0px;
+    }
+}
+
+@media (min-width:510px) and (max-width:991px) {
+    .ParanetSection {
+        height: 700px;
+
+    }
+}

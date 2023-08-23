@@ -1,0 +1,215 @@
+@import '../VAR/variabl.scss';
+
+body {
+    min-height: 500vh;
+}
+
+
+
+.divName {
+    min-height: 90.2vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../../public/image/website.s_cover_default_image.jpg');
+
+    h1 {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        top: 280px;
+        font-weight: bolder;
+        font-size: 65px;
+        color: $white;
+        text-align: center;
+    }
+
+    p {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        top: 285px;
+        font-size: 18px;
+        color: $white;
+        text-align: center;
+    }
+
+    .Home-Button {
+        color: $darkShadeOfGreen;
+        background-color: $offXhiteColor;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        top: 300px;
+        left: 45%;
+        text-align: center;
+    }
+}
+
+.AllCard {
+    background-color: #E8E8E8;
+    height: 1150px;
+
+    .card {
+        height: 935px;
+        width: 400px;
+        margin-top: 120px;
+
+        .cardImage {
+            width: 400px;
+            margin-left: -28px;
+            margin-top: -16px;
+        }
+    }
+}
+
+.Everything {
+    min-height: 55vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../../public/image/website.s_banner_default_image.jpg');
+
+    h1 {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        top: 135px;
+        font-weight: bolder;
+        font-size: 70px;
+        color: $white;
+        text-align: center;
+    }
+}
+
+.Would {
+    height: 600px;
+    background-color: #F2E8CF80;
+    margin-top: 80px;
+
+    h1 {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        top: 130px;
+        font-size: 43px;
+        color: $Black;
+        text-align: center;
+        font-family: 'cursive', sans-serif !important;
+
+    }
+
+    .ButtonWould {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 180px;
+
+        button {
+            margin-left: 40px;
+            font-size: 22px;
+            position: relative;
+            right: 20px;
+        }
+
+        .btn1 {
+            background-color: $darkShadeOfGreen;
+            color: $white;
+        }
+
+        .btn2 {
+            background-color: #FFEACA;
+            color: $darkShadeOfGreen;
+        }
+    }
+}
+
+
+
+
+
+
+
+// ALL MEDIA QUERY 
+
+@media (min-width:0px) and (width:500px) {
+
+    .AllCard {
+        background-color: #E8E8E8;
+        height: 3300px;
+    }
+
+    .Everything {
+        position: relative;
+        top: 0px;
+    }
+}
+
+@media (min-width:501px) and (max-width:700px) {
+
+    .AllCard {
+        background-color: #E8E8E8;
+        height: 3300px;
+    }
+
+    .Everything {
+        position: relative;
+        top: 0px;
+    }
+}
+
+
+
+@media (min-width:701px) and (max-width:830px) {
+    .AllCard {
+        height: 3300px;
+    }
+}
+
+@media (min-width:831px) and (max-width:991px) {
+    .AllCard {
+        background-color: #E8E8E8;
+        height: 4300px;
+
+        .card {
+            height: 1235px;
+            width: 560px;
+            margin-top: 150px;
+
+
+            .cardImage {
+                width: 560px;
+                margin-top: -16px;
+            }
+        }
+    }
+}
+
+
+@media (min-width:992px) and (max-width:1399px) {
+    .AllCard {
+        height: 2200px;
+
+        .cardOne {
+            position: relative;
+            right: 40px;
+        }
+
+        .cardTwo {
+            position: relative;
+            left: 40px;
+        }
+
+    }
+}
+
+@media (min-width:1400px) {
+    .cardOne {
+        margin-right: 30px;
+    }
+
+    .cardTwo {
+        margin-right: 30px;
+    }
+
+}

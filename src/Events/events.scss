@@ -1,0 +1,89 @@
+@import '../VAR/variabl.scss';
+
+
+
+
+.divDropRech {
+    display: flex;
+    justify-content: end;
+    margin-left: 150px;
+    height: 40px;
+
+}
+
+.SearchE {
+
+    input {
+        background-color: $colorBackGround;
+        border-radius: 0 0 0;
+        width: 250px !important;
+
+    }
+
+    button {
+        background-color: $offXhiteColor;
+        border-radius: 0 !important;
+        opacity: 0.6;
+        width: 70px;
+    }
+
+    input :hover {
+        border: 1px gray solid !important;
+    }
+}
+
+.cardEvents{
+    opacity: 0.7;
+}
+
+
+@media (min-width:768px) and (max-width:992px) {
+    .divDropRech {
+        margin-left: 20px;
+        position: relative;
+        bottom: 25px;
+    }
+
+    .divEvent {
+        position: relative;
+        bottom: -32px;
+    }
+
+}
+
+
+@media (max-width:767px) {
+    .parentDivEvents {
+        padding-top: 150px !important;
+        position: relative;
+    }
+
+    .divEvent {
+        position: relative;
+        bottom: 110px;
+    }
+
+    .divDropRech {
+        display: flex;
+        flex-direction: column-reverse;
+        margin-left: 0px;
+        position: relative;
+        bottom: 60px;
+
+        .dropdown {
+            button {
+                position: relative;
+                left: 100px;
+                bottom: -40px;
+                margin-left: -100px;
+            }
+        }
+    }
+
+    .SearchE {
+        position: relative;
+        right: 47px;
+
+    }
+
+}
