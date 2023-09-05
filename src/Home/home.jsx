@@ -3,18 +3,14 @@ import './home.scss';
 import "bootstrap/dist/js/bootstrap.min.js"
 import { Link } from 'react-router-dom';
 import '../Footer/footer.scss'
-// import 'bootstrap/dist/css/bootstrap.min.css';
 const Home = () => {
     return (
         <>
-
             <div className='divName'  >
                 <h1><b>Bringing life to your interior</b></h1>
                 <p>Discover our unique pieces of furnitures selected for you.</p>
                 <button className='Home-Button btn'>Discover More</button>
             </div>
-
-
 
             <div className='AllCard'>
                 <div className='container' >
@@ -52,7 +48,6 @@ const Home = () => {
             <div className='Everything'>
                 <h1><b>Everything is designed.</b></h1>
                 <h1><b>Few things are designed well.</b></h1>
-
             </div>
 
 

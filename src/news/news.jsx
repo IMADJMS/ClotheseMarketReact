@@ -1,188 +1,74 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-// import { useEffect } from "react";
-// import Footer from "../Footer/footer";
-// export default function News() {
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-//     const navigate = useNavigate();
+function News() {
+    const navigate= useNavigate();
+    const [inputValue, setInputValue] = useState('');
+    const [productSearch, setProductsSearch] = useState([]);
+    const [display, setDisplay] = useState(false);
 
-//     const [title, setTitle] = useState('')
-//     const [prix, setPrix] = useState('')
-//     const [image, setImage] = useState('')
+    const search = async (e) => {
+        const searchTerm = e.target.value;
+        setInputValue(searchTerm);
 
-//     const changeHandler = (e) => {
-//         setImage(e.target.files[0]);
-//         console.log(e.target.files[0])
-//     }
+        if (searchTerm === '') {
+            setProductsSearch([]);
+            setDisplay(false);
+            return;
+        }
 
-//     const createProduct = async (e) => {
-//         e.preventDefault();
-//         const formData = new FormData();
-//         formData.append('title', title)
-//         formData.append('prix', prix)
-//         formData.append('image', image)
-
-//         console.log(formData)
-//         await axios.post('http://127.0.0.1:8000/api/product', formData)
-//             .then(({ data }) => {
-//                 console.log(data.message)
-//                 navigate('/news')
-//             }).catch(({ response }) => {
-//                 if (response.status == 422) {
-//                     console.log(response.data.errors)
-//                 } else {
-//                     console.log(response.data.message)
-//                 }
-//             })
-//     }
-
-//     const [inputValue, setInputValue] = useState(0);
-//     const [maxValue, setMaxValue] = useState(0);
-//     const [minValue, setMinValue] = useState(0);
-
-//     useEffect(() => {
-//         if (inputValue > maxValue) {
-//             setMaxValue(inputValue);
-//         }
-
-//         if (inputValue < minValue) {
-//             setMinValue(inputValue);
-//         }
-//     }, [inputValue]);
-
-//     return (
-//         <>
-//         <div className="container mt-5">
-//             <div className="row justify-content-center">
-//                 <div className="conl-12 col-sm-12 col-md-12">
-//                     <div className="card">
-//                         <div className="card-body">
-//                             <h3 className="card-title"> Create Form</h3>
-//                             <hr></hr>
-//                             <div className="from-wrapper">
-
-//                                 <form onSubmit={createProduct}>
-
-//                                     <div className="mb-3">
-//                                         <label className="form-label">Title  </label>
-//                                         <input type="text" className="form-control"
-//                                             value={title}
-//                                             onChange={(e) => { setTitle(e.target.value) }}
-//                                         />
-//                                     </div>
-//                                     <div className="mb-3">
-//                                         <label className="form-label">Example textarea</label>
-//                                         <input className="form-control"
-//                                             value={prix}
-//                                             onChange={(e) => { setPrix(e.target.value) }}
-//                                         />
-//                                     </div>
-
-//                                     <div className="mb-3">
-//                                         <label className="form-label">Title  </label>
-//                                         <input type="file" className="form-control"
-
-//                                             onChange={changeHandler}
-//                                         />
-//                                     </div>
-
-//                                     <div className="mb-3">
-//                                         <button type="submit" className="btn btn-primary mb-3">  Save</button>
-//                                     </div>
-
-//                                 </form>
-
-
-
-//                             </div>
-
-
-//                         </div>
-//                     </div>
-//                 </div>
-
-//             </div>
-
-//         </div>
-
-// {/* <Footer/> */}
-
-//         </>
-//         // <>
-//         //     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-//         //     <input type="range" min={0} max={100} value={inputValue} onChange={(event) => setInputValue(Number(event.target.value))} />
-//         //     <div>
-//         //         Maximum Value: {maxValue}
-//         //     </div>
-//         //     <div>
-//         //         Minimum Value: {minValue}
-//         //     </div>
-//         // </>
-
-//     )
-
-
-
-
-// }
-
-
-import React, { useState } from "react";
-// import "./SearchBar.css"; // Don't forget to create and import the CSS file for styling
-
-function News({ placeholder, data }) {
-    const [filteredData, setFilteredData] = useState([]);
-    const [wordEntered, setWordEntered] = useState("");
-
-    const handleFilter = (event) => {
-        const searchWord = event.target.value;
-        setWordEntered(searchWord);
-        const newFilter = data.filter((value) => {
-            return value.title.toLowerCase().includes(searchWord.toLowerCase());
-        });
-
-        if (searchWord === "") {
-            setFilteredData([]);
-        } else {
-            setFilteredData(newFilter);
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/search/${searchTerm}`);
+            if (response.ok) {
+                const data = await response.json();
+                setProductsSearch(data);
+                setDisplay(true);
+            } else {
+                console.log('Not Found');
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
-    const clearInput = () => {
-        setFilteredData([]);
-        setWordEntered("");
+    const handleItemClick = (e) => {
+        navigate('shop');
     };
 
     return (
-        <div className="search">
-            <div className="searchInputs">
-                <input
-                    type="text"
-                    placeholder={placeholder}
-                    value={wordEntered}
-                    onChange={handleFilter}
-                />
-                <div className="searchIcon">
-                    {filteredData.length === 0 ? (
-                        <span className="search-icon">&#128269;</span> // Search icon (you can use an appropriate Unicode character)
-                    ) : (
-                        <span className="close-icon" onClick={clearInput}>&times;</span> // Close icon (you can use an appropriate Unicode character)
-                    )}
-                </div>
-            </div>
-            {filteredData.length !== 0 && (
-                <div className="dataResult">
-                    {filteredData.slice(0, 15).map((value, key) => {
-                        return (
-                            <a className="dataItem" href={value.link} target="_blank" key={key}>
-                                <p>{value.title}</p>
+        <>
+            <br /><br /><br /><br /><br /><br />
+            <input
+                type="search"
+                onClick={() => setDisplay(true)}
+                list="datalistOptions"
+                className="form-control w-75 border-0"
+                placeholder="Search..."
+                value={inputValue}
+                onChange={search}
+            />
+            {display && (
+                <div className="border rounded" style={{ width: '637px', position: 'relative', left: '-4px', bottom: '681px', backgroundColor: 'white', flexDirection: 'column' }}>
+                    {productSearch.map((i) => (
+                        <div className="list-group" style={{ display: 'flex' }} key={i.id}>
+                            <a href="#" className="list-group-item border-0 list-group-item-action" onClick={() => handleItemClick(i)}>
+                                <img
+                                    src={`http://127.0.0.1:8000/storage/product/image/${i.image}`}
+                                    height="65"
+                                    style={{ width: '50px' }}
+                                    alt="..."
+                                />
+                                <h5 className="my-4 mx-4 d-inline-block">{i.title}</h5>
+                                <hr className="w-100 mb-3" style={{ opacity: '0.1' }} />
+                                <div className="" style={{ display: 'flex', justifyContent: 'end', position: 'relative', bottom: '75px' }}>
+                                    <h6>{i.prix}DH</h6>
+                                </div>
                             </a>
-                        );
-                    })}
+                        </div>
+                    ))}
                 </div>
             )}
-        </div>
+        </>
     );
 }
 
