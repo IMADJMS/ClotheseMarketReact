@@ -149,7 +149,7 @@ export default function Shop() {
                                 <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-4" >
                                     <div className="card h-100 border-top-0 border-end-0 border-start-0 " >
                                         <img
-                                            src={`http://laravel-api.local:8000/storage/product/image/${item.image}`}
+                                            src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
                                             height="225"
                                             className="card-img-top"
                                             alt="..."
@@ -175,7 +175,7 @@ export default function Shop() {
                                         <div className="productSearch" key={product.id}>
                                             <a href="" className="list-group-item border-0 w-100" onClick={() => handleItemClick(product)}>
                                                 <img
-                                                    src={`http://laravel-api.local:8000/storage/product/image/${product.image}`}
+                                                    src={`http://127.0.0.1:8000/storage/product/image/${product.image}`}
                                                     height="50"
                                                     style={{ width: '50px' }}
                                                     alt="..."
