@@ -2,33 +2,27 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './shop.scss'
 import 'bootstrap/dist/css/bootstrap.css';
-import Swal from 'sweetalert2';
 
 export default function Shop() {
-    const [searchh, setSearchh] = useState([]);
+
     const [data, setData] = useState();
     const [products, setProducts] = useState([]);
-    const [productSearch, setProductsSearch] = useState([])
+    const [inputValue, setInputValue] = useState('');
+    const [productSearch, setProductsSearch] = useState([]);
+    const [display, setDisplay] = useState(false);
+    const [notFound, setNotFound] = useState(false);
+    const [noone,setNoone] = useState('none');
 
-    useEffect(() => {
-        fetchProductsSearch();
-    }, [])
 
-    const fetchProductsSearch = async () => {
-        await axios.get('http://127.0.0.1:8000/api/product').then(({ data }) => { setProductsSearch(data) })
+    // Get All Product In Database !!
+    const fetchProducts = async () => {
+        await axios.get('http://127.0.0.1:8000/api/product').then(({ data }) => { setProducts(data) })
     }
-
     useEffect(() => {
         fetchProducts();
     }, [])
 
-    const fetchProducts = async () => {
-        await axios.get('http://127.0.0.1:8000/api/product').then(({ data }) => { setProducts(data) })
-    }
-
-
-
-
+    // Filter Product in Price
     const filterPrix = () => {
         const filterProduitPrix = products.filter(item => item.prix <= MaxPrix)
         setProducts(filterProduitPrix);
@@ -38,35 +32,60 @@ export default function Shop() {
         filterPrix();
     }, [])
 
-    const GetVaulePrix = products.map((item) => item.prix)
-    const MaxPrix = Math.max(...GetVaulePrix)
+    // MaxPrix for get max price in databese and take it to input nubmer
+    const MaxPrix = Math.max(...products.map((item) => item.prix));
 
 
 
+    // This part for search 
 
+    useEffect(() => {
+        if (inputValue === '') {
+            // Input is empty, fetch all products
+            fetchAllProducts();
 
-    const search = async (e) => {
-        console.warn(e)
-        let result = await fetch("http://127.0.0.1:8000/api/search/" + e);
-
-        if (e !== "") {
-            result = await result.json();
-            setProductsSearch(result)
-
-        }else{
-            setDisplay('none')
-            //alert('test')
-            // search();
-            
-
+        } else {
+            // Input is not empty, perform search
+            search(inputValue);
         }
+    }, [inputValue]);
 
-    }
-    const [ddisplay, setDisplay] = useState("none");
+    const fetchAllProducts = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/product');
+            if (response.ok) {
+                const data = await response.json();
+                setProductsSearch(data.slice(0, 5));
+                setDisplay(true);
+            } else {
+                console.log('Not Found');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
-    const focusInput = () => {
-        setDisplay('flex');
-    }
+    const search = async (searchTerm) => {
+        setInputValue(searchTerm);
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/search/${searchTerm}`);
+            if (response.ok) {
+                const data = await response.json();
+                setProductsSearch(data);
+                setNotFound(data.length === 0);
+                setDisplay(true);
+            } else {
+                console.log('Not Found');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    const handleItemClick = (product) => {
+        // Handle item click action here, e.g., redirect to a product page
+    };
+
 
 
 
@@ -78,7 +97,7 @@ export default function Shop() {
                         <h5> <b>Price Range</b> </h5>
                         <div className='mt-4'>
                             <small for="customRange3" class="form-label">0DH</small>
-                            <small for="customRange3 " class="form-label smallTwo  ">{data}DH</small>
+                            <small for="customRange3" class="form-label smallTwo">{data}DH</small>
                             <input type="range" class="form-range" min="0" max={MaxPrix} step="0.4" id="customRange3" value={data} onChange={(e) => setData(e.target.value)} />
                         </div>
                     </div>
@@ -87,18 +106,26 @@ export default function Shop() {
                         <div className="row">
                             <div className="col-lg-8">
                                 <div className="Search d-flex">
-
-                                    <input type="search" onFocus={focusInput} list="datalistOptions" className='form-control w-75   border-0' placeholder='Search. . .' onChange={(e) => search(e.target.value)} />
-                                    <button className=' btn d-inline-block' >
-                                        <img src="./image/ICONS/search .png" width='25' height='25' alt="" srcset="" />
-                                    </button>
+                                    <input
+                                        type="search"
+                                        onClick={() => {
+                                            setDisplay(true);
+                                            setNoone('flex');
+                                        }}
+                                        list="datalistOptions"
+                                        className="form-control "
+                                        placeholder="Search..."
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        onBlur={() => setDisplay(false)}
+                                    />
 
                                 </div>
                             </div>
-                            <div className="col-lg-3  colSort">
+                            <div className="col-lg-3 mt-4 ">
                                 <span>Sort By :  </span>
                                 <div class="dropdown d-inline-block">
-                                    <a class="dropdownA btn  dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="dropdownA btn  dropdown-toggle " role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                         <b>Featured</b>
                                     </a>
 
@@ -117,48 +144,53 @@ export default function Shop() {
 
 
 
-                        <div className="row" style={{ marginTop: '30px' }}>
+                        <div className="row" >
                             {products.map((item) => (
-                                <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-4" style={{}}>
-                                    <div className="card h-100 border-top-0 border-end-0 border-start-0 " style={{}}>
+                                <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-4" >
+                                    <div className="card h-100 border-top-0 border-end-0 border-start-0 " >
                                         <img
-                                            src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
+                                            src={`http://laravel-api.local:8000/storage/product/image/${item.image}`}
                                             height="225"
-                                            style={{ width: '220px' }}
                                             className="card-img-top"
                                             alt="..."
                                         />
-                                        <div className="card-body" style={{ marginTop: '-23px', marginLeft: '-11px' }}>
-                                            <p className="card-title" style={{ fontSize: '18px', color: '#F2E8C' }}>
-                                                {item.title} <span className="m-3   btn btn-danger" style={{ fontSize: '12px', height: '22px', width: '95px', lineHeight: '.6' }}>Unpublished</span>
+                                        <div className="card-body" >
+                                            <p className="card-title">
+                                                {item.title} <span className="m-3 btn btn-danger" >Unpublished</span>
                                             </p>
-                                            <h6 className="card-text " style={{ marginTop: '-15px' }}>{item.prix} DH </h6>
+                                            <h6 className="card-text ">{item.prix} DH </h6>
                                         </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <div className=' border  rounded ' style={{ display: ddisplay, width: '637px', position: 'relative', left: '-4px', bottom: '681px', backgroundColor: 'white', flexDirection: 'column' }}>
-                            {productSearch.map((i) => (
-                                <div className='  list-group' style={{ display: 'flex' }}>
-                                    <a href="" className='list-group-item border-0 list-group-item-action'>
-                                        <img
-                                            src={`http://127.0.0.1:8000/storage/product/image/${i.image}`}
-                                            height="65"
-                                            style={{ width: '50px' }}
-                                            alt="..."
-                                        />
-                                        <h5 className='my-4 mx-4 d-inline-block'>{i.title}</h5>
-                                        <hr className='w-100 mb-3' style={{ opacity: '0.1' }} />
-                                        <div className='' style={{ display: 'flex', justifyContent: 'end', position: 'relative', bottom: '75px' }}>
 
-                                            <h6>{i.prix}DH</h6>
+
+                        {display && (
+                            <div className="listSearch border rounded  col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3" >
+                                {notFound ? (
+                                    <p className="fw-bolder">Product not found</p>
+                                ) : (
+                                    productSearch.map((product) => (
+                                        <div className="productSearch" key={product.id}>
+                                            <a href="" className="list-group-item border-0 w-100" onClick={() => handleItemClick(product)}>
+                                                <img
+                                                    src={`http://laravel-api.local:8000/storage/product/image/${product.image}`}
+                                                    height="50"
+                                                    style={{ width: '50px' }}
+                                                    alt="..."
+                                                />
+                                                <h5 className="my-4 mx-4 d-inline-block">{product.title}</h5>
+                                                <div  >
+                                                    <h6>{product.prix}DH</h6>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    ))
+                                )}
+                            </div>
+                        )}
 
-                                </div>
-                            ))}
-                        </div>
 
                     </div>
                 </div>
@@ -185,23 +217,6 @@ export default function Shop() {
 
 
 
-// {products.map((item) => (
-
-//     <div className="card h-100 border-top-0 border-end-0 border-start-0 w-75" style={{ opacity: '0.7' }}>
-//         <img
-//             src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
-//             height="230"
-//             width="400"
-//             className="card-img-top "
-//             alt="..."
-
-//         />
-//         <div className="card-body " style={{ marginTop: '-10px', marginLeft: '-11px' }}>
-//             <p className="card-title " style={{ fontSize: '16px' }}>{item.title} <span className='m3-4 btn btn-danger' style={{ fontSize: '13px', height: '20px', lineHeight: '.5' }} >Unpublished</span></p>
-//             <h6 className="card-text ">{item.prix} DH </h6>
-//         </div>
-//     </div>
-// ))}
 
 
 

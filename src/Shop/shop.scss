@@ -1,58 +1,139 @@
 @import '../VAR/variabl.scss';
 
+.container {
+    .row {
+        .colRange {
+            .smallTwo {
+                display: flex;
+                justify-content: end;
+                margin-top: -22px;
+            }
+        }
 
-.colRange {
-    .smallTwo {
+        .col-lg-9 {
+            .row {
+                .col-lg-8 {
+                    .Search {
+                        input {
+                            background-color: $colorBackGround;
+                            border-radius: 0 0 0;
+                            border: 0 !important;
+                            width: 600px !important;
+                        }
+
+                        button {
+                            background-color: $colorBackGround;
+                            border-radius: 0 !important;
+                            opacity: 0.6;
+                            border: 0;
+                            width: 70px;
+                        }
+                    }
+                }
+
+                .col-lg-3 {
+                    .dropdown {
+                        .dropdownA {
+                            background-color: $colorBackGround;
+                            height: 40px;
+                        }
+                    }
+                }
+            }
+
+            .row {
+                margin-top: 30px;
+
+                img {
+                    width: 220px;
+                }
+
+                .card-body {
+                    margin-top: -23px;
+                    margin-left: -11px;
+
+                    p {
+                        font-size: 18px;
+                        color: $offXhiteColor;
+
+                        span {
+                            font-size: 12px;
+                            height: 22px;
+                            width: 96px;
+                            line-height: 0.6;
+                        }
+                    }
+
+                    h6 {
+                        margin-top: -15px;
+                    }
+                }
+            }
+        }
+    }
+
+    .listSearch {
+        width: 600px;
+        position: relative;
+        bottom: 681px;
+        background-color: $white;
+        flex-direction: column;
+        justify-content: center;
         display: flex;
-        justify-content: end;
-        margin-top: -22px;
+
+        .productSearch {
+            display: flex;
+            margin-bottom: -35px;
+
+            div {
+                display: flex;
+                justify-content: end;
+                position: relative;
+                bottom: 43px;
+            }
+        }
+
+        a:hover {
+            // background-color: $colorBackGround;
+            background-color: green;
+
+        }
     }
+
 }
 
-.Search {
-    input {
-        background-color: $colorBackGround;
-        border-radius: 0 0 0;
-        border: 0 !important;
-        width: 600px !important;
-    }
-
-    button {
-        background-color: $colorBackGround;
-        border-radius: 0 !important;
-        opacity: 0.6;
-        border: 0;
-        width: 70px;
-    }
-
-    input :hover {
-        border: 1px gray solid !important;
-    }
-}
-
-.dropdown {
-    .dropdownA {
-        background-color: $colorBackGround;
-        height: 40px;
-
-    }
-}
-
-// .card{
-//     width: 5030rem !important;
-// }
-
-
-@media (max-width:992px) {
+@media (max-width: 992px) {
     .colSort {
         margin-top: 20px;
     }
 }
 
-@media (max-width:575px) {
-    .cards{
-    
+@media (max-width: 575px) {
+    .cards {
         display: flex;
         justify-content: center;
+    }
+}
+
+// @media Query for div search 
+@media (0px <=width <=500px) {
+    .listSearch {
+        width: 459px !important;
+        position: relative;
+        bottom: 2043px !important;
+        z-index: 9999;
+        display: flex;
+
+    }
+}
+
+@media (501px <=width <=576px) {
+    .listSearch {
+        // width: 459px !important;
+        position: relative;
+        bottom: 2043px !important;
+        z-index: 9999;
+        display: flex;
+
     }
 }
