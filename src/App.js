@@ -9,7 +9,9 @@ import About from "./AboutUs/about";
 import Services from "./Services/services";
 import News from "./news/news";
 import RegisterE from "./Events/registerE";
+import SingleProduct from "./Shop/SingleProduct";
 import './App.css'
+import Users from "./Users";
 
 function App() {
   return (
@@ -26,12 +28,11 @@ function App() {
         <Route path='about' element={<About />} />
         <Route path='news' element={<News />} />
         <Route path='registerE' element={<RegisterE />} />
-
-
-
-
+        <Route path="/shop/:id" element={<SingleProduct />} />
       </Routes>
       {/* <Footer /> */}
+
+      {/* <Users/> */}
     </>
   );
 }

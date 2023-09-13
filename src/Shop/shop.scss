@@ -1,12 +1,33 @@
 @import '../VAR/variabl.scss';
 
 .container {
+    text-decoration: none;
+    list-style: none !important;
+
     .row {
         .colRange {
             .smallTwo {
                 display: flex;
                 justify-content: end;
                 margin-top: -22px;
+            }
+
+            .slider {
+                height: 10px;
+                width: 100%;
+                background-color: #ddd;
+                border-radius: 5px;
+                margin-top: 10px;
+
+                .thumb {
+                    height: 20px;
+                    width: 20px;
+                    border-radius: 50%;
+                    background-color: $offXhiteColor;
+                    cursor: grab;
+                    margin-top: -5px;
+                    border: none !important;
+                }
             }
         }
 
@@ -53,19 +74,22 @@
                     margin-left: -11px;
 
                     p {
-                        font-size: 18px;
-                        color: $offXhiteColor;
+                        font-size: 20px;
+                        color: #e8ce8c;
+                        
 
                         span {
                             font-size: 12px;
                             height: 22px;
                             width: 96px;
                             line-height: 0.6;
+                            
                         }
                     }
 
                     h6 {
                         margin-top: -15px;
+                        
                     }
                 }
             }

@@ -1,41 +1,49 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import './shop.scss'
 import 'bootstrap/dist/css/bootstrap.css';
-
+import Slider from 'react-slider';
 export default function Shop() {
 
-    const [data, setData] = useState();
     const [products, setProducts] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [productSearch, setProductsSearch] = useState([]);
     const [display, setDisplay] = useState(false);
     const [notFound, setNotFound] = useState(false);
-    const [noone,setNoone] = useState('none');
-
+    const [noone, setNoone] = useState('none');
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [priceRange, setPriceRange] = useState([0, 0]);
+    const [maxPrice, setMaxPrice] = useState();
+    const navigate = useNavigate();
 
     // Get All Product In Database !!
     const fetchProducts = async () => {
-        await axios.get('http://127.0.0.1:8000/api/product').then(({ data }) => { setProducts(data) })
-    }
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/product');
+            const productData = response.data;
+            setProducts(productData);
+            setFilteredProducts(productData);
+            const initialMaxPrice = Math.max(...productData.map((item) => item.prix));
+            setMaxPrice(initialMaxPrice);
+            setPriceRange([0, initialMaxPrice]); // Set the initial price range to include all products
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
     useEffect(() => {
         fetchProducts();
     }, [])
 
     // Filter Product in Price
-    const filterPrix = () => {
-        const filterProduitPrix = products.filter(item => item.prix <= MaxPrix)
-        setProducts(filterProduitPrix);
-
-    }
     useEffect(() => {
-        filterPrix();
-    }, [])
+        const filtered = products.filter(
+            (item) => item.prix >= priceRange[0] && item.prix <= priceRange[1]
+        );
+        setFilteredProducts(filtered);
+    }, [priceRange, products]);
 
-    // MaxPrix for get max price in databese and take it to input nubmer
-    const MaxPrix = Math.max(...products.map((item) => item.prix));
-
-
+    const handleChange = (newValues) => setPriceRange(newValues);
 
     // This part for search 
 
@@ -82,9 +90,57 @@ export default function Shop() {
         }
     };
 
-    const handleItemClick = (product) => {
-        // Handle item click action here, e.g., redirect to a product page
+
+    const handleItemClick = (i) => {
+        navigate(`/shop/${i.idProducts}`);
+
     };
+
+
+    const onBlurr = () => {
+        setTimeout(() => {
+            setDisplay(false)
+
+        }, 150);
+    }
+
+
+    const filterProductsByPriceLow = () => {
+        axios.get('http://127.0.0.1:8000/api/filterLow')
+            .then(response => {
+                setProducts(response.data);
+            })
+
+    };
+
+    const filterProductsByPriceHigh = () => {
+        axios.get('http://127.0.0.1:8000/api/filterHigh')
+            .then(response => {
+                setProducts(response.data);
+            })
+
+    };
+
+
+    const filterProductsByName = () => {
+        axios.get('http://127.0.0.1:8000/api/filterName')
+            .then(response => {
+                setProducts(response.data);
+            })
+
+    };
+
+
+    const filterProductsByLast = () => {
+        axios.get('http://127.0.0.1:8000/api/filterLast')
+            .then(response => {
+                setProducts(response.data);
+            })
+
+    };
+
+
+
 
 
 
@@ -95,10 +151,22 @@ export default function Shop() {
                 <div className="row">
                     <div className="col-lg-3 colRange">
                         <h5> <b>Price Range</b> </h5>
-                        <div className='mt-4'>
-                            <small for="customRange3" class="form-label">0DH</small>
-                            <small for="customRange3" class="form-label smallTwo">{data}DH</small>
-                            <input type="range" class="form-range" min="0" max={MaxPrix} step="0.4" id="customRange3" value={data} onChange={(e) => setData(e.target.value)} />
+                        <div className="mt-4">
+                            <small htmlFor="customRange3" className="form-label">
+                                {priceRange[0]}DH
+                            </small>
+                            <small htmlFor="customRange3" className="form-label smallTwo">
+                                {priceRange[1]}DH
+
+                            </small>
+                            <Slider
+                                className="slider"
+                                value={priceRange}
+                                onChange={handleChange}
+                                min={0}
+                                max={maxPrice}
+                            />
+
                         </div>
                     </div>
 
@@ -116,25 +184,24 @@ export default function Shop() {
                                         className="form-control "
                                         placeholder="Search..."
                                         value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
-                                        onBlur={() => setDisplay(false)}
+                                        onChange={(e) => { setInputValue(e.target.value) }}
+                                        onBlur={() => { onBlurr() }}
                                     />
 
                                 </div>
                             </div>
-                            <div className="col-lg-3 mt-4 ">
+                            <div className="col-lg-3  ">
                                 <span>Sort By :  </span>
-                                <div class="dropdown d-inline-block">
-                                    <a class="dropdownA btn  dropdown-toggle " role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div className="dropdown d-inline-block">
+                                    <a className="dropdownA btn  dropdown-toggle " role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                         <b>Featured</b>
                                     </a>
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li><a class="dropdown-item" href="#">Featured</a></li>
-                                        <li><a class="dropdown-item" href="#">Newest Arrivals</a></li>
-                                        <li><a class="dropdown-item" href="#">Name(A-Z)</a></li>
-                                        <li><a class="dropdown-item" href="#">Price - Low to High</a></li>
-                                        <li><a class="dropdown-item" href="#">Price - High to Low </a></li>
+                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <li className='dropdown-item' onClick={filterProductsByLast}>Newest Arrivals</li>
+                                        <li className="dropdown-item" onClick={filterProductsByName}>Name(A-Z)</li>
+                                        <li className="dropdown-item" onClick={filterProductsByPriceLow}>Price - Low to High</li>
+                                        <li className="dropdown-item" onClick={filterProductsByPriceHigh}>Price - High to Low </li>
 
                                     </ul>
                                 </div>
@@ -144,45 +211,56 @@ export default function Shop() {
 
 
 
-                        <div className="row" >
-                            {products.map((item) => (
+
+
+
+                        <div className="row">
+                            {filteredProducts.map((item) => (
                                 <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-4" >
-                                    <div className="card h-100 border-top-0 border-end-0 border-start-0 " >
-                                        <img
-                                            src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
-                                            height="225"
-                                            className="card-img-top"
-                                            alt="..."
-                                        />
-                                        <div className="card-body" >
-                                            <p className="card-title">
-                                                {item.title} <span className="m-3 btn btn-danger" >Unpublished</span>
-                                            </p>
-                                            <h6 className="card-text ">{item.prix} DH </h6>
-                                        </div>
+                                    <div className="card h-100 border-top-0 border-end-0 border-start-0 ">
+                                        <Link to={`/shop/${item.idProducts}`} style={{ listStyle: 'none', textDecoration: 'none' }}>
+                                            <img
+                                                src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
+                                                height="235"
+                                                className="card-img-top"
+                                                alt="..."
+                                            />
+                                            <div className="card-body">
+                                                <p className="card-title mt-2 ">
+                                                    {item.title} <span className="m-2 btn btn-danger">Unpublished</span>
+                                                </p>
+                                                <h6 className="card-text ft-bolder" style={{marginTop:'-7px'}}>{item.prix}DH</h6>
+                                            </div>
+                                        </Link>
                                     </div>
                                 </div>
                             ))}
                         </div>
 
 
+
+
+
+
                         {display && (
-                            <div className="listSearch border rounded  col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3" >
+                            <div className="listSearch border rounded  col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3" style={{ display: noone }}>
                                 {notFound ? (
                                     <p className="fw-bolder">Product not found</p>
                                 ) : (
-                                    productSearch.map((product) => (
-                                        <div className="productSearch" key={product.id}>
-                                            <a href="" className="list-group-item border-0 w-100" onClick={() => handleItemClick(product)}>
+                                    productSearch.map((i) => (
+                                        <div className="productSearch" key={i.idProducts}>
+                                            <a className="list-group-item border-0 w-100" onClick={() => handleItemClick(i)} >
+
                                                 <img
-                                                    src={`http://127.0.0.1:8000/storage/product/image/${product.image}`}
+                                                    src={`http://127.0.0.1:8000/storage/product/image/${i.image}`}
                                                     height="50"
                                                     style={{ width: '50px' }}
                                                     alt="..."
                                                 />
-                                                <h5 className="my-4 mx-4 d-inline-block">{product.title}</h5>
+                                                <h5 className="my-4 mx-4 d-inline-block">{i.title}</h5>
+
                                                 <div  >
-                                                    <h6>{product.prix}DH</h6>
+                                                    <h6>{i.prix}DH{i.idProducts}</h6>
                                                 </div>
                                             </a>
                                         </div>
