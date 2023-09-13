@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import './shop.scss'
 import 'bootstrap/dist/css/bootstrap.css';
 import Slider from 'react-slider';
+import Footer from '../Footer/footer';
+import FooterTwo from '../Footer/footerTwo';
 export default function Shop() {
 
     const [products, setProducts] = useState([]);
@@ -91,10 +93,10 @@ export default function Shop() {
     };
 
 
-    const handleItemClick = (i) => {
-        navigate(`/shop/${i.idProducts}`);
+    // const handleItemClick = (i) => {
+    //     navigate(`/shop/${i.idProducts}`);
 
-    };
+    // };
 
 
     const onBlurr = () => {
@@ -216,7 +218,7 @@ export default function Shop() {
 
                         <div className="row">
                             {filteredProducts.map((item) => (
-                                <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 mb-4" >
+                                <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 " >
                                     <div className="card h-100 border-top-0 border-end-0 border-start-0 ">
                                         <Link to={`/shop/${item.idProducts}`} style={{ listStyle: 'none', textDecoration: 'none' }}>
                                             <img
@@ -229,7 +231,7 @@ export default function Shop() {
                                                 <p className="card-title mt-2 ">
                                                     {item.title} <span className="m-2 btn btn-danger">Unpublished</span>
                                                 </p>
-                                                <h6 className="card-text ft-bolder" style={{marginTop:'-7px'}}>{item.prix}DH</h6>
+                                                <h6 className="card-text " style={{ marginTop: '-7px' }}>{item.prix}DH</h6>
                                             </div>
                                         </Link>
                                     </div>
@@ -242,38 +244,19 @@ export default function Shop() {
 
 
 
-                        {display && (
-                            <div className="listSearch border rounded  col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3" style={{ display: noone }}>
-                                {notFound ? (
-                                    <p className="fw-bolder">Product not found</p>
-                                ) : (
-                                    productSearch.map((i) => (
-                                        <div className="productSearch" key={i.idProducts}>
-                                            <a className="list-group-item border-0 w-100" onClick={() => handleItemClick(i)} >
 
-                                                <img
-                                                    src={`http://127.0.0.1:8000/storage/product/image/${i.image}`}
-                                                    height="50"
-                                                    style={{ width: '50px' }}
-                                                    alt="..."
-                                                />
-                                                <h5 className="my-4 mx-4 d-inline-block">{i.title}</h5>
-
-                                                <div  >
-                                                    <h6>{i.prix}DH{i.idProducts}</h6>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        )}
 
 
                     </div>
                 </div>
             </div>
-            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+            <br /><br /><br /><br /><br />
+            {/* <div style={{marginTop:'1800px'}}> */}
+                <FooterTwo />
+            {/* </div>w */}
+
+
+
         </>
 
     )
