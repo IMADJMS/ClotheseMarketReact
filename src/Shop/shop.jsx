@@ -22,7 +22,7 @@ export default function Shop() {
     // Get All Product In Database !!
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/product');
+            const response = await axios.get('http://192.168.11.144:8015/product/all-product');
             const productData = response.data;
             setProducts(productData);
             setFilteredProducts(productData);
@@ -62,7 +62,7 @@ export default function Shop() {
 
     const fetchAllProducts = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/product');
+            const response = await fetch('http://192.168.11.144:8015/product/all-product');
             if (response.ok) {
                 const data = await response.json();
                 setProductsSearch(data.slice(0, 5));
@@ -220,16 +220,17 @@ export default function Shop() {
                             {filteredProducts.map((item) => (
                                 <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 " >
                                     <div className="card h-100 border-top-0 border-end-0 border-start-0 ">
-                                        <Link to={`/shop/${item.idProducts}`} style={{ listStyle: 'none', textDecoration: 'none' }}>
+                                        <Link to={`/shop/${item.id}`} style={{ listStyle: 'none', textDecoration: 'none' }}>
                                             <img
-                                                src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
+                                                // src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
                                                 height="235"
                                                 className="card-img-top"
                                                 alt="..."
+                                                src={item.image}
                                             />
                                             <div className="card-body">
                                                 <p className="card-title mt-2 ">
-                                                    {item.title} <span className="m-2 btn btn-danger">Unpublished</span>
+                                                    {item.nomProduit} <span className="m-2 btn btn-danger">Unpublished</span>
                                                 </p>
                                                 <h6 className="card-text " style={{ marginTop: '-7px' }}>{item.prix}DH</h6>
                                             </div>
@@ -238,6 +239,37 @@ export default function Shop() {
                                 </div>
                             ))}
                         </div>
+
+
+
+                        {display && (
+                            <div className="listSearch border rounded  col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3" style={{ display: noone }}>
+                                {notFound ? (
+                                    <p className="fw-bolder">Product not found</p>
+                                ) : (
+                                    productSearch.map((i) => (
+                                        <div className="productSearch" key={i.idProducts}>
+                                            <a className="list-group-item border-0 w-100" >
+
+                                                <img
+                                                    // src={`http://127.0.0.1:8000/storage/product/image/${i.image}`}
+                                                    height="50"
+                                                    style={{ width: '50px' }}
+                                                    alt="..."
+                                                    src={i.image}
+
+                                                />
+                                                <h5 className="my-4 mx-4 d-inline-block">{i.nomProduit}</h5>
+
+                                                <div  >
+                                                    <h6>{i.prix}DH</h6>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
 
 
 
@@ -252,7 +284,7 @@ export default function Shop() {
             </div>
             <br /><br /><br /><br /><br />
             {/* <div style={{marginTop:'1800px'}}> */}
-                <FooterTwo />
+                {/* <FooterTwo /> */}
             {/* </div>w */}
 
 
