@@ -8,7 +8,7 @@ export default function SingleProduct() {
 
     useEffect(() => {
         // Fetch product data from the Laravel API
-        axios.get(`http://127.0.0.1:8000/api/showDetails/${id}`)
+        axios.get(`http://192.168.11.144:8015/product/show-product-detail?id=${id}`)
             .then(response => {
                 setProduct(response.data);
             })
@@ -19,7 +19,7 @@ export default function SingleProduct() {
 
     return (
         <div>
-            <h2>{product.title}</h2>
+            <h2>{product.nomProduit}</h2>
             <p>Price: {product.prix}</p>
             {/* Add more product details here */}
         </div>

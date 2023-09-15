@@ -1,69 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
+import '../news/style.css';
+import { FaStar ,FaEye, FaHeart} from 'react-icons/fa';
+import 'bootstrap/dist/css/bootstrap.css';
 
-export default function News() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [productSearch, setProductSearch] = useState([]);
-    const [display, setDisplay] = useState(false);
-    const [notFound, setNotFound] = useState(false);
-    const navigate = useNavigate(); // Hook to handle navigation
 
-    const handleItemClick = (product) => {
-        // Navigate to the SingleProduct page with the product's ID as a parameter
-        navigate(`/shop/${product.idProducts}`);
-    };
-
-    useEffect(() => {
-        if (searchTerm.trim() === '') {
-            setDisplay(false);
-            return;
-        }
-
-        axios.get(`http://127.0.0.1:8000/api/searchProducts?term=${searchTerm}`)
-            .then(response => {
-                setProductSearch(response.data);
-                setDisplay(true);
-                setNotFound(response.data.length === 0);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, [searchTerm]);
-
+const News = () => {
     return (
-        <div className="autocomplete-search">
-            <br /><br /><br /><br /><br /><br /><br />
-            <input
-                type="text"
-                placeholder="Search for products"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {display && (
-                <div className="listSearch border rounded">
-                    {notFound ? (
-                        <p className="fw-bolder">Product not found</p>
-                    ) : (
-                        productSearch.map((product) => (
-                            <div className="productSearch" key={product.idProducts}>
-                                <a className="list-group-item border-0 w-100" onClick={() => handleItemClick(product)}>
-                                    <img
-                                        src={`http://127.0.0.1:8000/storage/product/image/${product.image}`}
-                                        height="50"
-                                        style={{ width: '50px' }}
-                                        alt="..."
-                                    />
-                                    <h5 className="my-4 mx-4 d-inline-block">{product.title}</h5>
-                                    <div>
-                                        <h6>{product.prix} DH</h6>
-                                    </div>
-                                </a>
+        <div className="container mt-5">
+            <div className="row">
+                <div className="col-md-3 col-sm-6">
+                    <div className="product-grid">
+                        <div className="product-image">
+                            <a href="#" className="image">
+                                <img className="pic-1 " src="./image/pexels-photo-14344830.jpeg" alt="Product 1" />
+                                <img className="pic-2 " src="./image/website.s_three_columns_default_image_1.jpg" alt="Product 1" />
+                            </a>
+                            <span className="product-sale-label">News!</span>
+                            <ul className="social">
+                                <li><a href="#" data-tip="Quick View"><FaEye /></a></li>
+                                <li><a href="#" data-tip="Add to wishlist"><FaHeart /></a></li>
+                            </ul>
+                            <div className="product-rating">
+                                <ul className="rating">
+                                    <li><FaStar /></li>
+                                    <li><FaStar /></li>
+                                    <li><FaStar /></li>
+                                    <li><FaStar /></li>
+                                    <li><FaStar /></li>
+                                </ul>
+                                <a className="add-to-cart" href="#">ADD TO CART</a>
                             </div>
-                        ))
-                    )}
+                        </div>
+                        <div className="product-content">
+                            <h3 className="title fw-bolder"><a href="#" >Men's Shirt</a></h3>
+                            <div className="price"><span className='old-n'>$28.00</span >$20.00</div>
+                        </div>
+                    </div>
                 </div>
-            )}
+            </div>
         </div>
     );
-}
+};
+
+export default News;

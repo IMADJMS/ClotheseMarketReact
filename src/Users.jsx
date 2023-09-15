@@ -1,67 +1,81 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useState , useEffect } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 
-export default function Users() {
-    const [user, setUset] = useState([]);
-    const [value , setValue]= useState();
-
-    // useEffect(() => {
-    //     axios.get("https://api.github.com/users").then((res) => {
-    //         setUset(res.data)
-    //     })
-    // },[])
-
-    // const delet = (id) => {
-    //     if (window.confirm('Is deleted')) {
-    //         const deleteParId = user.filter(item => item.id !== id)
-    //         setUset(deleteParId)
-
-    //     }
-    // }
+const Users = () => {
+    const [user, setUser] = useState([]);
+    const [value, setValue] = useState('');
+    const [time , setTime] = useState('is null');
 
 
+const getUsers = ()=>{
+    axios.get("https://api.github.com/users").then((res) => {
+                setUser(res.data)
+            })
+}
 
-    const Search = ()=>{
-        axios.get(`https://api.github.com/users/${value}`).then((res) => {
-            setUset(res.data)
-        })
+useEffect(() => {
+    getUsers();
+}, [])
 
+    const fetchData = () => {
+        if (value == "") {
+            axios.get("https://api.github.com/users").then((res) => {
+                
+                setUser(res.data)
+            
+            })
+        } else {
+            setUser("")
+            axios.get(`https://api.github.com/search/users?q=${value}`).then((res) => {
+            
+            
         
-        
+                
 
-    }
+                setTimeout(() => {
+                setUser(res.data.items)
+                
+                }, 4000);            })
+
+        }
+
+
+    };
+
 
     return (
-        <>
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-9 mt-3">
+                    <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        className='form-control d-inline-block'
+                    />
+                    <button onClick={fetchData} className='btn btn-primary mt-2'>Search</button>
+                </div>
 
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-4">
-                    <input type="text" onChange={(e)=>{setValue(e.target.value)}} />
-                    <button className='btn btn-primary' onClick={Search}>Search</button>
+
+                {(user.length> 0) ? user.map((item) => (
+                    <div className="col-lg-4 mt-4">
+                        <div className="card" style={{ width: "18rem" }} >
+                            <img src={item.avatar_url} className="card-img-top" alt="..." />
+                            <div className="card-body">
+                                <h5 className="card-title">{item.login}</h5>
+                                <p className="card-text">{item.subscriptions_url}</p>
+                                <a href={item.html_url} target='_blank' className="btn btn-primary">Show Profile</a>
+                            </div>
+                        </div>
                     </div>
 
-                        <div className="col-lg-4 mt-3">
-                            {/* <div key={user.id} className="card" style={{ width: "18rem" }}>
-                                <img src={user.avatar_url} class="card-img-top" alt="..." />
-                                <div class="card-body"> */}
-                                    <h5 class="card-title">{user.login}</h5>
-                                    {/* <p class="card-text">{user.subscriptions_url}</p>
-                                    <a href={user.html_url} target='_blank' class="btn btn-primary">Show Profile</a>
-                                    <button className='btn btn-danger m-2' onClick={() => delet(user.id)}>Delet</button> */}
-                                {/* </div>
-                            </div> */}
-                        </div>
 
 
-
-                </div>
+                )) :  (<h1>Att</h1>) }
             </div>
+        </div>
+    );
+};
 
-
-
-        </>
-    )
-
-}
+export default Users;

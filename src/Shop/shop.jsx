@@ -22,13 +22,13 @@ export default function Shop() {
     // Get All Product In Database !!
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/product');
+            const response = await axios.get('http://192.168.11.144:8015/product/all-product');
             const productData = response.data;
             setProducts(productData);
             setFilteredProducts(productData);
             const initialMaxPrice = Math.max(...productData.map((item) => item.prix));
             setMaxPrice(initialMaxPrice);
-            setPriceRange([0, initialMaxPrice]); // Set the initial price range to include all products
+            setPriceRange([0, initialMaxPrice]); 
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -62,7 +62,7 @@ export default function Shop() {
 
     const fetchAllProducts = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/product');
+            const response = await fetch('http://192.168.11.144:8015/product/all-product');
             if (response.ok) {
                 const data = await response.json();
                 setProductsSearch(data.slice(0, 5));
@@ -78,7 +78,7 @@ export default function Shop() {
     const search = async (searchTerm) => {
         setInputValue(searchTerm);
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/search/${searchTerm}`);
+            const response = await fetch(`http://192.168.11.144:8015/product/search-by-title?title=${searchTerm}`);
             if (response.ok) {
                 const data = await response.json();
                 setProductsSearch(data);
@@ -93,11 +93,6 @@ export default function Shop() {
     };
 
 
-    // const handleItemClick = (i) => {
-    //     navigate(`/shop/${i.idProducts}`);
-
-    // };
-
 
     const onBlurr = () => {
         setTimeout(() => {
@@ -108,7 +103,7 @@ export default function Shop() {
 
 
     const filterProductsByPriceLow = () => {
-        axios.get('http://127.0.0.1:8000/api/filterLow')
+        axios.get('http://192.168.11.144:8015/product/all-product-by-price-asc')
             .then(response => {
                 setProducts(response.data);
             })
@@ -116,7 +111,7 @@ export default function Shop() {
     };
 
     const filterProductsByPriceHigh = () => {
-        axios.get('http://127.0.0.1:8000/api/filterHigh')
+        axios.get('http://192.168.11.144:8015/product/all-product-by-price-desc')
             .then(response => {
                 setProducts(response.data);
             })
@@ -125,7 +120,7 @@ export default function Shop() {
 
 
     const filterProductsByName = () => {
-        axios.get('http://127.0.0.1:8000/api/filterName')
+        axios.get('http://192.168.11.144:8015/product/search-by-title')
             .then(response => {
                 setProducts(response.data);
             })
@@ -133,13 +128,7 @@ export default function Shop() {
     };
 
 
-    const filterProductsByLast = () => {
-        axios.get('http://127.0.0.1:8000/api/filterLast')
-            .then(response => {
-                setProducts(response.data);
-            })
 
-    };
 
 
 
@@ -200,7 +189,6 @@ export default function Shop() {
                                     </a>
 
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li className='dropdown-item' onClick={filterProductsByLast}>Newest Arrivals</li>
                                         <li className="dropdown-item" onClick={filterProductsByName}>Name(A-Z)</li>
                                         <li className="dropdown-item" onClick={filterProductsByPriceLow}>Price - Low to High</li>
                                         <li className="dropdown-item" onClick={filterProductsByPriceHigh}>Price - High to Low </li>
@@ -219,19 +207,20 @@ export default function Shop() {
                         <div className="row">
                             {filteredProducts.map((item) => (
                                 <div key={item.id} className="cards col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 " >
-                                    <div className="card h-100 border-top-0 border-end-0 border-start-0 ">
-                                        <Link to={`/shop/${item.idProducts}`} style={{ listStyle: 'none', textDecoration: 'none' }}>
+                                    <div className="card h-100 border-top-0 border-end-0 border-start-0">
+                                        <Link to={`/shop/${item.id}`} style={{ listStyle: 'none', textDecoration: 'none' }}>
                                             <img
-                                                src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
+                                                // src={`http://127.0.0.1:8000/storage/product/image/${item.image}`}
                                                 height="235"
-                                                className="card-img-top"
+                                                className="card-img-top hover-zoom"
                                                 alt="..."
+                                                src={item.image}
                                             />
                                             <div className="card-body">
-                                                <p className="card-title mt-2 ">
-                                                    {item.title} <span className="m-2 btn btn-danger">Unpublished</span>
+                                                <p className="card-title mt-3 ">
+                                                    {item.nomProduit} <span className=" btn btn-danger d-inline-block">Unpublished</span>
                                                 </p>
-                                                <h6 className="card-text " style={{ marginTop: '-7px' }}>{item.prix}DH</h6>
+                                                <h6 className="card-text   " style={{ marginTop: '-7px' , color:"gray"  }}>{item.prix}DH</h6>
                                             </div>
                                         </Link>
                                     </div>
@@ -239,7 +228,32 @@ export default function Shop() {
                             ))}
                         </div>
 
+                        {display && (
+                            <div className="listSearch border rounded  col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3" style={{ display: noone }}>
+                                {notFound ? (
+                                    <p className="fw-bolder">Product not found</p>
+                                ) : (
+                                    productSearch.map((i) => (
+                                        <div className="productSearch" key={i.id}>
+                                            <a className="list-group-item border-0 w-100"  onClick={()=>{ navigate(`/shop/${i.id}`)}}>
 
+                                                <img
+                                                    src={i.image}
+                                                    height="50"
+                                                    style={{ width: '50px' }}
+                                                    alt="..."
+                                                />
+                                                <h5 className="my-4 mx-4 d-inline-block">{i.nomProduit}</h5>
+
+                                                <div  >
+                                                    <h6>{i.prix}DH</h6>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
 
 
 
@@ -250,10 +264,9 @@ export default function Shop() {
                     </div>
                 </div>
             </div>
+
             <br /><br /><br /><br /><br />
-            {/* <div style={{marginTop:'1800px'}}> */}
-                <FooterTwo />
-            {/* </div>w */}
+            <FooterTwo />
 
 
 
