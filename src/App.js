@@ -12,6 +12,7 @@ import RegisterE from "./Events/registerE";
 import SingleProduct from "./Shop/SingleProduct";
 import './App.css'
 import Users from "./Users";
+import Card from "./Shop/card/card";
 
 function App() {
   return (

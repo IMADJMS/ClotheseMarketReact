@@ -80,13 +80,9 @@ const Home = () => {
                 <div className="ButtonWould">
                     <button className='btn btn1'>Discover More</button>
                     <button className='btn btn2  d-inline-block'>Discover More</button>
-
                 </div>
             </div>
-
-
-
-        <Footer/>
+        {/* <Footer/> */}
 
         </>
 
